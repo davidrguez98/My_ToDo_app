@@ -1,47 +1,41 @@
-class Task:
+tasks = {}
 
-    def __init__(self, task, description):
-        self.task = task
-        self.description = description
+def tasks_list():
+    if not tasks:
+        print("No hay tareas pendientes.")
+    else:
+        print(tasks)
 
-class ToDo:
+def new_task():
+    task = input("Tarea: ")
+    description = input("Descripción: ")
+    tasks[task.capitalize()] = description.capitalize()
+    print(f"La tarea {task} ha sido creada.")
 
-    def __init__(self):
-        self.tasks = []
-
-    def show_TasksList(self):
-        if not self.tasks:
-            print("No hay tareas en la lista.")
-        else:
-            print("Lista de tareas:")
-            for task in self.tasks:
-                print(f"    - {task["Task"]}: {task["Description"]}")
+def delete_task():
+    task = input("Eliminar: ").capitalize()
+    if task in tasks:
+        del tasks[task]
+    else:
+        (f"La tarea {task} no se encuentra en la lista.")
         
-    def new_task(self):
-        task = str(input("Nombre de la tarea: "))
-        description = str(input("Descripción de la tarea: "))
-        new_task = {"Task": task.capitalize(), "Description": description.capitalize()}
-        self.tasks.append(new_task)
-        print(f"La tarea {task} ha sido creada correctamente.")
-
-    def delete_task(self):
-        
-        self.show_TasksList()
-        
-        a = str(input("¿Qué tarea quieres eliminar?: "))
-        for task in self.tasks:
-            if self.tasks["Task"] == a.capitalize(): #No me hace bien la comparación.
-                self.tasks.remove(task)
-                print(f"La tarea {a} ha sido eliminada correctamente.")
-                return
-        print(f"La tarea {a} no se encuentra en la lista")
+def refresh_task():
+    task = input("¿Qué tarea quieres actualizar?: ").capitalize()
+    if task in tasks:
+        del tasks[task]
+        task = input("Tarea: ")
+        description = input("Descripción: ")
+        tasks[task.capitalize()] = description.capitalize()
+        print("La tarea ha sido actualizada.")
+    else:
+        (f"La tarea {task} no se encuentra en la lista.")
 
 
-todo = ToDo()
 
-todo.show_TasksList()
-todo.new_task()
-todo.new_task()
-todo.new_task()
-todo.delete_task()
-todo.show_TasksList()
+new_task()
+new_task()
+tasks_list()
+delete_task()
+tasks_list()
+refresh_task()
+tasks_list()
