@@ -1,19 +1,15 @@
-""" tasks = {
-    "ID" : 0,
-    "Task" : "",
-    "Description": "",
-    "Status": "",
-    "Created date": "",
-    "Updated date": "",
-} """
+import json
+import os
 
-tasks = []
+if not os.path.exists("data"):
+    os.makedirs("data")
 
-def tasks_list():
-    if not tasks:
-        print("No hay tareas pendientes.")
-    else:
-        print(tasks)
+json_file = "data/TaskList.json"
+
+def task_list():
+
+    with open(json_file, "r") as json_data:
+        print(json_data.read())
 
 def new_task():
     task = input("Tarea: ").capitalize()
@@ -21,7 +17,40 @@ def new_task():
     status = input("Eligen entre: todo, in-progress o done: ").capitalize()
     created_date = "yesterday".capitalize()
     updated_date = "today".capitalize()
-    tasks.append({"Task": task, "Description": description, "Status": status, "Created date": created_date, "Update date": updated_date})
+    data = {
+        "Task": task, 
+        "Description": description, 
+        "Status": status, 
+        "Created date": created_date, 
+        "Update date": updated_date
+        }
+
+    with open(json_file, "a") as json_data:
+        json.dump(data, json_data)
+
+def update_task():
+    update_task = input("¿Qué tarea quieres actualizar?: ").capitalize()
+    
+    with open(json_file, "r") as json_data: #No consigo entrar el json para leer los value de los dict de dentro ya que mi diccionario está en otro archivo
+        json_dict = json.load(json_data)
+
+        
+
+""" def refresh_task():
+
+    update_task = input("Tarea que quieres actualizar: ").capitalize()
+
+    with open(json_file, "r") as json_data:
+        data_dict = json.load(data)
+        for value in data["name"].items():
+            if value == update_task:
+                new_task() 
+
+
+    with open(json_file, "r") as json_data:
+        json_dict = json.load(json_data)
+        if json_dict["name"] == update_task:
+            print("true")
 
 def delete_task():
     task = input("Eliminar: ").capitalize()
@@ -40,13 +69,10 @@ def refresh_task():
         tasks[task.capitalize()] = description.capitalize()
         print("La tarea ha sido actualizada.")
     else:
-        (f"La tarea {task} no se encuentra en la lista.")
+        (f"La tarea {task} no se encuentra en la lista.") """
 
 
 
-tasks_list()
+
 new_task()
-new_task()
-tasks_list()
-delete_task()
-tasks_list()
+task_list()
