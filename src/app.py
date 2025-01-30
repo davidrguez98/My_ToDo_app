@@ -6,73 +6,99 @@ if not os.path.exists("data"):
 
 json_file = "data/TaskList.json"
 
-def task_list():
-
-    with open(json_file, "r") as json_data:
-        print(json_data.read())
+count_id = 0
+tasks = []
+descriptions = []
 
 def new_task():
-    task = input("Tarea: ").capitalize()
-    description = input("Descripción: ").capitalize()
-    status = input("Eligen entre: todo, in-progress o done: ").capitalize()
-    created_date = "yesterday".capitalize()
-    updated_date = "today".capitalize()
-    data = {
-        "Task": task, 
-        "Description": description, 
-        "Status": status, 
-        "Created date": created_date, 
-        "Update date": updated_date
-        }
+
+    global count_id
+    count_id += 1
+    task = input("\nNombre de la tarea: ").capitalize()
+    description = input("Descripción de la tarea: ").capitalize()
+
+    tasks.append(task)
+    descriptions.append(description)
+
+    print(f"\nLa tarea {task} se ha guardado correctamente.")
+
+
+    #No consigo dividir el json en dos listas independientes.
+"""     with open(json_file, "w") as json_data:
+        json.dump(tasks, json_data)
 
     with open(json_file, "a") as json_data:
-        json.dump(data, json_data)
+        json.dump(descriptions, json_data) """
 
-def update_task():
-    update_task = input("¿Qué tarea quieres actualizar?: ").capitalize()
-    
-    with open(json_file, "r") as json_data: #No consigo entrar el json para leer los value de los dict de dentro ya que mi diccionario está en otro archivo
-        json_dict = json.load(json_data)
+def list_task():
 
+    if count_id > 0:
+        print("\nListado de tareas:\n")
+        for i in range(count_id):
+            print(f"{i + 1}. {tasks[i]}: {descriptions[i]}")
         
+    else:
+        print("\nNo hay tareas registradas.")
 
-""" def refresh_task():
+def mark_as_done():
 
-    update_task = input("Tarea que quieres actualizar: ").capitalize()
+    list_task()
+    
+    mark_as_done = input("\nEscribe el número de la tarea que quieres marcar como realizada: ")
 
-    with open(json_file, "r") as json_data:
-        data_dict = json.load(data)
-        for value in data["name"].items():
-            if value == update_task:
-                new_task() 
+    global count_id
 
-
-    with open(json_file, "r") as json_data:
-        json_dict = json.load(json_data)
-        if json_dict["name"] == update_task:
-            print("true")
+    if mark_as_done.isdigit():
+        mark_as_done = int(mark_as_done)
+        print(f"\nLa tarea {tasks[mark_as_done - 1]} se ha realizado con éxito.")
+        tasks.pop(mark_as_done - 1)
+        descriptions.pop(mark_as_done - 1)
+        count_id -= 1
+    else:
+        print("\nDebes escribir un número.")
 
 def delete_task():
-    task = input("Eliminar: ").capitalize()
-    for value in tasks.items():
-        if value == task:
-            del tasks[task]
-        else:
-            (f"La tarea {task} no se encuentra en la lista.")
-        
-def refresh_task():
-    task = input("¿Qué tarea quieres actualizar?: ").capitalize()
-    if task in tasks:
-        del tasks[task]
-        task = input("Tarea: ")
-        description = input("Descripción: ")
-        tasks[task.capitalize()] = description.capitalize()
-        print("La tarea ha sido actualizada.")
+
+    list_task()
+    
+    delete_task = input("\nEscribe el número de la tarea que quieres eliminar: ")
+
+    global count_id
+
+    if delete_task.isdigit():
+        delete_task = int(delete_task)
+        print(f"\nLa tarea {tasks[delete_task - 1]} se ha eliminado correctamente.")
+        tasks.pop(delete_task - 1)
+        descriptions.pop(delete_task - 1)
+        count_id -= 1
     else:
-        (f"La tarea {task} no se encuentra en la lista.") """
+        print("\nDebes escribir un número.")
 
+def edit_task():
 
+    list_task()
+    
+    edit_task = input("\nEscribe el número de la tarea que editar: ")
+
+    global count_id
+
+    if edit_task.isdigit():
+        edit_task = int(edit_task)
+        name_choice = input("¿Quieres cambiarle el nombre a la tarea?: ").lower()
+        if name_choice == "si":
+            new_name = input("Nuevo nombre de la tarea: ")
+            tasks[edit_task - 1] = new_name
+        else:
+            pass
+        description_choice = input("¿Quieres cambiarle la descripción a la tarea?: ").lower()
+        if description_choice == "si":
+            new_description = input("Nueva descripción de la tarea: ")
+            descriptions[edit_task - 1] = new_description
+        else:
+            pass
+    else:
+        print("\nDebes escribir un número.")
 
 
 new_task()
-task_list()
+new_task()
