@@ -99,6 +99,31 @@ def edit_task():
     else:
         print("\nDebes escribir un número.")
 
+while True:
 
-new_task()
-new_task()
+    print("\nTO-DO APP\n")
+    print("1. Ver lista de tareas")
+    print("2. Nueva tarea")
+    print("3. Modificar una tarea")
+    print("4. Eliminar una tarea")
+    print("5. Marcar una tarea como realizada")
+    print("6. Salir del programa")
+
+    choice = input("\nSelecciona una de las opciones anteriores: ")
+
+    match choice:
+        case "1":
+            list_task()
+        case "2":
+            new_task()
+        case "3":
+            edit_task()
+        case "4":
+            delete_task()
+        case "5":
+            mark_as_done()
+        case "6":
+            print("Saliendo del programa.")
+            break
+        case _:
+            print("Opción no válida. Escriba un número del 1 al 6.")
