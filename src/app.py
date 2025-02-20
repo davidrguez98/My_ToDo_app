@@ -2,10 +2,11 @@ TASKS = []
 
 class Task:
 
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str, description: str, status):
         self.name = name
         self.description = description
-
+        self.status = status
+        
     def __repr__(self):
         return f"{self.name}: {self.description}\n"
 
@@ -13,6 +14,7 @@ def new_task():
 
     name = input("Nombre de la tarea: ").capitalize()
     description = input("Descripción de la tarea: ").capitalize()
+    status = "To-Do"
 
     while True:
 
@@ -26,10 +28,10 @@ def new_task():
                 break
             else:
                 print(f"La tarea {name} se ha guardado correctamente.")
-                return Task(name, description)
+                return Task(name, description, status)
         else:
             print(f"La tarea {name} se ha guardado correctamente.")
-            return Task(name, description)
+            return Task(name, description, status)
 
 def task_list():
 
@@ -42,7 +44,7 @@ def task_list():
         print("\nLISTADO DE TAREAS:\n")
 
         for index, task in enumerate(TASKS):
-            print(f"{index + 1}. {task.name}: {task.description}")
+            print(f"{index + 1}. {task.name}: {task.description} - {task.status}")
 
 def edit_task():
 
@@ -64,17 +66,23 @@ def delete_task():
 
     TASKS.pop(del_task - 1)
 
+def mark_as_done():
 
+    task_list()
 
+    done_task = input("¿Qué tarea has realizado?: ")
+    done_task = int(done_task)
+
+    TASKS[done_task - 1].status = "Done"
 
 while True:
 
     print("\nTO-DO APP\n")
     print("1. Ver lista de tareas")
-    print("2. Nueva tarea")
-    print("3. Modificar una tarea")
-    print("4. Eliminar una tarea")
-    print("5. Marcar una tarea como realizada")
+    print("2. Marcar una tarea como realizada")
+    print("3. Nueva tarea")
+    print("4. Modificar una tarea")
+    print("5. Eliminar una tarea")
     print("6. Salir del programa")
 
     choice = input("\nSelecciona una de las opciones anteriores: ")
@@ -83,13 +91,13 @@ while True:
         case "1":
             task_list()
         case "2":
-            TASKS.append(new_task())
+            mark_as_done()
         case "3":
-            edit_task() #Hay que añadirle errores como que el número no esté en la lista
+            TASKS.append(new_task())
         case "4":
-            delete_task() #Hay que añadirle errores como que el número no esté en la lista
+            edit_task()  # Hay que añadirle errores como que el número no esté en la lista
         case "5":
-            pass
+            delete_task()  # Hay que añadirle errores como que el número no esté en la lista
         case "6":
             print("Saliendo del programa.")
             break
