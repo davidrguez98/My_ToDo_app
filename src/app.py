@@ -67,7 +67,7 @@ def new_task():
                 choice = input("Escribe 'Si' o 'No': ").capitalize()
                 if choice == "No":
                     print("De acuerdo. Saliendo de la opción 'Crear una nueva tarea'.")
-                    return
+                    return None
                 
         description = input("Descripción de la tarea: ").capitalize()
         status = "To-Do"
@@ -131,6 +131,8 @@ def settings() -> bool:
             else:
                 break
 
+
+
 while True:
 
     print("\nTO-DO APP")
@@ -153,7 +155,9 @@ while True:
         case "2":
             mark_as_done()
         case "3":
-            TASKS.append(new_task()) #mirar si digo que no en duplicado
+            task = new_task()
+            if task:
+                TASKS.append(task)
         case "4":
             edit_task()
         case "5":
