@@ -1,103 +1,71 @@
-import json
-import os
+TASKS = []
 
-if not os.path.exists("data"):
-    os.makedirs("data")
+class Task:
 
-json_file = "data/TaskList.json"
+    def __init__(self, name: str, description: str):
+        self.name = name
+        self.description = description
 
-count_id = 0
-tasks = []
-descriptions = []
+    def __repr__(self):
+        return f"{self.name}: {self.description}\n"
 
 def new_task():
 
-    global count_id
-    count_id += 1
-    task = input("\nNombre de la tarea: ").capitalize()
+    name = input("Nombre de la tarea: ").capitalize()
     description = input("Descripción de la tarea: ").capitalize()
 
-    tasks.append(task)
-    descriptions.append(description)
+    while True:
 
-    print(f"\nLa tarea {task} se ha guardado correctamente.")
+        if name in TASKS:
 
+            print("Ya existe una tarea con ese nombre. ¿Quieres guardarla?")
+            choice = input("Escribe 'Si' o 'No': ").capitalize()
 
-    #No consigo dividir el json en dos listas independientes.
-"""     with open(json_file, "w") as json_data:
-        json.dump(tasks, json_data)
+            if choice == "No":
+                print("De acuerdo. Saliendo de la opción 'Crear una nueva tarea'.")
+                break
+            else:
+                print(f"La tarea {name} se ha guardado correctamente.")
+                return Task(name, description)
+        else:
+            print(f"La tarea {name} se ha guardado correctamente.")
+            return Task(name, description)
 
-    with open(json_file, "a") as json_data:
-        json.dump(descriptions, json_data) """
+def task_list():
 
-def list_task():
-
-    if count_id > 0:
-        print("\nListado de tareas:\n")
-        for i in range(count_id):
-            print(f"{i + 1}. {tasks[i]}: {descriptions[i]}")
+    if not TASKS:
         
-    else:
-        print("\nNo hay tareas registradas.")
-
-def mark_as_done():
-
-    list_task()
+        print("La lista de tareas está vacía.")
     
-    mark_as_done = input("\nEscribe el número de la tarea que quieres marcar como realizada: ")
-
-    global count_id
-
-    if mark_as_done.isdigit():
-        mark_as_done = int(mark_as_done)
-        print(f"\nLa tarea {tasks[mark_as_done - 1]} se ha realizado con éxito.")
-        tasks.pop(mark_as_done - 1)
-        descriptions.pop(mark_as_done - 1)
-        count_id -= 1
     else:
-        print("\nDebes escribir un número.")
 
-def delete_task():
+        print("\nLISTADO DE TAREAS:\n")
 
-    list_task()
-    
-    delete_task = input("\nEscribe el número de la tarea que quieres eliminar: ")
-
-    global count_id
-
-    if delete_task.isdigit():
-        delete_task = int(delete_task)
-        print(f"\nLa tarea {tasks[delete_task - 1]} se ha eliminado correctamente.")
-        tasks.pop(delete_task - 1)
-        descriptions.pop(delete_task - 1)
-        count_id -= 1
-    else:
-        print("\nDebes escribir un número.")
+        for index, task in enumerate(TASKS):
+            print(f"{index + 1}. {task.name}: {task.description}")
 
 def edit_task():
 
-    list_task()
-    
-    edit_task = input("\nEscribe el número de la tarea que editar: ")
+    task_list()
 
-    global count_id
+    number_task = input("¿Qué tarea quieres modificar?: ")
+    number_task = int(number_task)
 
-    if edit_task.isdigit():
-        edit_task = int(edit_task)
-        name_choice = input("¿Quieres cambiarle el nombre a la tarea?: ").lower()
-        if name_choice == "si":
-            new_name = input("Nuevo nombre de la tarea: ")
-            tasks[edit_task - 1] = new_name
-        else:
-            pass
-        description_choice = input("¿Quieres cambiarle la descripción a la tarea?: ").lower()
-        if description_choice == "si":
-            new_description = input("Nueva descripción de la tarea: ")
-            descriptions[edit_task - 1] = new_description
-        else:
-            pass
-    else:
-        print("\nDebes escribir un número.")
+    name = input("Nuevo nombre: ").capitalize()
+    description = input("Nueva descripción: ").capitalize()
+    TASKS[number_task - 1] = Task(name, description)
+
+def delete_task():
+
+    task_list()
+
+    del_task = input("¿Qué tarea quieres modificar?: ")
+    del_task = int(del_task)
+
+    TASKS.pop(del_task - 1)
+
+
+
 
 while True:
 
@@ -113,15 +81,15 @@ while True:
 
     match choice:
         case "1":
-            list_task()
+            task_list()
         case "2":
-            new_task()
+            TASKS.append(new_task())
         case "3":
-            edit_task()
+            edit_task() #Hay que añadirle errores como que el número no esté en la lista
         case "4":
-            delete_task()
+            delete_task() #Hay que añadirle errores como que el número no esté en la lista
         case "5":
-            mark_as_done()
+            pass
         case "6":
             print("Saliendo del programa.")
             break
