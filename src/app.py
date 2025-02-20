@@ -10,6 +10,8 @@ class Task:
     def __repr__(self):
         return f"{self.name}: {self.description}\n"
     
+    display = True
+    
 def task_list():
 
     if not TASKS:
@@ -20,6 +22,20 @@ def task_list():
 
         for index, task in enumerate(TASKS):
             print(f"{index + 1}. {task.name}: {task.description} - {task.status}")
+
+def task_list_2():
+
+    if not TASKS:
+        print("La lista de tareas está vacía.")
+    else:
+        print("\nTAREAS PENDIENTES:")
+        for index, task in enumerate(TASKS):
+            if task.status == "To-Do":
+                print(f"{index + 1}: {task.name}: {task.description}")
+        print("\nTAREAS HECHAS:")
+        for index, task in enumerate(TASKS):
+            if task.status == "Done":
+                print(f"{index + 1}: {task.name}: {task.description}")
     
 def mark_as_done():
 
@@ -97,6 +113,24 @@ def delete_task():
     print(f"La tarea {TASKS[del_task - 1].name} ha sido eliminada.")
     TASKS.pop(del_task - 1)
 
+def settings() -> bool:
+
+        choice = input("\n¿Quieres cambiar la vista?: ").capitalize()
+        
+        while True:
+
+            if choice == "Si":
+                if Task.display == False:
+                    Task.display = True
+                    print("Vista cambiada.")
+                    return
+                if Task.display == True:
+                    Task.display = False
+                    print("Vista cambiada.")
+                    return
+            else:
+                break
+
 while True:
 
     print("\nTO-DO APP")
@@ -105,23 +139,29 @@ while True:
     print("3. Nueva tarea")
     print("4. Modificar una tarea")
     print("5. Eliminar una tarea")
-    print("6. Salir del programa")
+    print("6. Configuración de vista de listado")
+    print("7. Salir del programa")
 
     choice = input("\nSelecciona una de las opciones anteriores: ")
 
     match choice:
         case "1":
-            task_list()
+            if Task.display == False:
+                task_list_2()
+            else:
+                task_list()
         case "2":
             mark_as_done()
         case "3":
-            TASKS.append(new_task())
+            TASKS.append(new_task()) #mirar si digo que no en duplicado
         case "4":
             edit_task()
         case "5":
             delete_task()
         case "6":
+            settings()
+        case "7":
             print("Saliendo del programa.")
             break
         case _:
-            print("Opción no válida. Escriba un número del 1 al 6.")
+            print("Opción no válida. Escriba un número del 1 al 7.")
