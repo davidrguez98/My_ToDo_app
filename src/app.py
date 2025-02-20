@@ -9,75 +9,97 @@ class Task:
         
     def __repr__(self):
         return f"{self.name}: {self.description}\n"
-
-def new_task():
-
-    name = input("Nombre de la tarea: ").capitalize()
-    description = input("Descripción de la tarea: ").capitalize()
-    status = "To-Do"
-
-    while True:
-
-        if name in TASKS:
-
-            print("Ya existe una tarea con ese nombre. ¿Quieres guardarla?")
-            choice = input("Escribe 'Si' o 'No': ").capitalize()
-
-            if choice == "No":
-                print("De acuerdo. Saliendo de la opción 'Crear una nueva tarea'.")
-                break
-            else:
-                print(f"La tarea {name} se ha guardado correctamente.")
-                return Task(name, description, status)
-        else:
-            print(f"La tarea {name} se ha guardado correctamente.")
-            return Task(name, description, status)
-
+    
 def task_list():
 
     if not TASKS:
-        
         print("La lista de tareas está vacía.")
     
     else:
-
         print("\nLISTADO DE TAREAS:\n")
 
         for index, task in enumerate(TASKS):
             print(f"{index + 1}. {task.name}: {task.description} - {task.status}")
+    
+def mark_as_done():
+
+    if not TASKS:
+        print("La lista de tareas está vacía.")
+    else:
+
+        task_list()
+
+        try:
+            done_task = int(input("¿Qué tarea has realizado?: "))
+        except ValueError:
+            print("Error: debes de introducir un número.")
+            return
+
+        TASKS[done_task - 1].status = "Done"
+        print(f"La tarea {TASKS[done_task - 1].name} ha sido realizada.")
+
+def new_task():
+
+    name = input("Nombre de la tarea: ").capitalize()
+
+    while True:
+
+        for task in TASKS:
+
+            if task.name == name:
+                print("Ya existe una tarea con ese nombre. ¿Quieres guardarla?")
+                choice = input("Escribe 'Si' o 'No': ").capitalize()
+                if choice == "No":
+                    print("De acuerdo. Saliendo de la opción 'Crear una nueva tarea'.")
+                    return
+                
+        description = input("Descripción de la tarea: ").capitalize()
+        status = "To-Do"
+            
+        print(f"La tarea {name} se ha guardado correctamente.")
+        return Task(name, description, status)
 
 def edit_task():
 
     task_list()
 
-    number_task = input("¿Qué tarea quieres modificar?: ")
-    number_task = int(number_task)
+    try:
+        number_task = int(input("¿Qué tarea quieres modificar?: "))
+    except ValueError:
+        print("Error: debes de introducir un número.")
+        return
+
+    if number_task < 1 or number_task > len(TASKS):
+        print("Error: Selecciona un número de tarea válido.")
+        return
 
     name = input("Nuevo nombre: ").capitalize()
     description = input("Nueva descripción: ").capitalize()
-    TASKS[number_task - 1] = Task(name, description)
+    
+    TASKS[number_task - 1].name = name
+    TASKS[number_task - 1].description = description
+    print(f"La tarea {name} ha sido actualizada correctamente.")
 
 def delete_task():
 
     task_list()
 
-    del_task = input("¿Qué tarea quieres modificar?: ")
-    del_task = int(del_task)
+    try:
+        del_task = int(input("¿Qué tarea quieres modificar?: "))
+    except ValueError:
+        print("Error: debes de introducir un número.")
+        return
 
+    if del_task < 1 or del_task > len(TASKS):
+        print("Error: Selecciona un número de tarea válido.")
+        return
+    
+    print(f"La tarea {TASKS[del_task - 1].name} ha sido eliminada.")
     TASKS.pop(del_task - 1)
-
-def mark_as_done():
-
-    task_list()
-
-    done_task = input("¿Qué tarea has realizado?: ")
-    done_task = int(done_task)
-
-    TASKS[done_task - 1].status = "Done"
 
 while True:
 
-    print("\nTO-DO APP\n")
+    print("\nTO-DO APP")
     print("1. Ver lista de tareas")
     print("2. Marcar una tarea como realizada")
     print("3. Nueva tarea")
@@ -95,9 +117,9 @@ while True:
         case "3":
             TASKS.append(new_task())
         case "4":
-            edit_task()  # Hay que añadirle errores como que el número no esté en la lista
+            edit_task()
         case "5":
-            delete_task()  # Hay que añadirle errores como que el número no esté en la lista
+            delete_task()
         case "6":
             print("Saliendo del programa.")
             break
