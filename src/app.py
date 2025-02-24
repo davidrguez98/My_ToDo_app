@@ -1,3 +1,5 @@
+import json
+
 TASKS = []
 
 class Task:
@@ -11,7 +13,32 @@ class Task:
         return f"{self.name}: {self.description}\n"
     
     display = True
+
+    def to_dict(self):
+        
+        return {
+            "name": self.name,
+            "description": self.description,
+            "status": self.status
+        }
     
+def save_tasks_to_json():
+
+    task_as_dicts = [task.to_dict() for task in TASKS]
+
+    with open ("data/TaskList.json", "w") as file:
+        json.dump(task_as_dicts, file, indent=4)
+
+def load_tasks_from_json():
+
+    try:
+        with open("data/TaskList.json", "r") as file:
+            task_data = json.load(file)
+            for task in task_data:
+                TASKS.append(Task(**task))
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
 def task_list():
 
     if not TASKS:
@@ -53,6 +80,8 @@ def mark_as_done():
 
         TASKS[done_task - 1].status = "Done"
         print(f"La tarea {TASKS[done_task - 1].name} ha sido realizada.")
+
+        save_tasks_to_json()
 
 def new_task():
 
@@ -96,6 +125,8 @@ def edit_task():
     TASKS[number_task - 1].description = description
     print(f"La tarea {name} ha sido actualizada correctamente.")
 
+    save_tasks_to_json()
+
 def delete_task():
 
     task_list()
@@ -112,6 +143,8 @@ def delete_task():
     
     print(f"La tarea {TASKS[del_task - 1].name} ha sido eliminada.")
     TASKS.pop(del_task - 1)
+
+    save_tasks_to_json()
 
 def settings() -> bool:
 
@@ -131,7 +164,7 @@ def settings() -> bool:
             else:
                 break
 
-
+load_tasks_from_json()
 
 while True:
 
@@ -158,6 +191,7 @@ while True:
             task = new_task()
             if task:
                 TASKS.append(task)
+                save_tasks_to_json()
         case "4":
             edit_task()
         case "5":
