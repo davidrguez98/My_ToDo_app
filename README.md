@@ -1,24 +1,26 @@
 # My ToDo App ✅📝
 
-Aplicación backend desarrollada en Python que permite gestionar tareas (crear, listar, actualizar y eliminar), almacenándolas en un archivo local en formato JSON. Ideal como proyecto introductorio para entender la estructura de una API simple y persistencia de datos sin base de datos externa.
+Aplicación de consola en Python que permite crear, listar, modificar, marcar como completadas y eliminar tareas. Las tareas se almacenan de forma persistente en un archivo JSON local. Es un proyecto ideal para practicar estructuras de control, manejo de archivos, clases y persistencia de datos sin base de datos.
 
 ## 🧠 Descripción
 
-Esta API permite llevar el control de tareas a través de un sistema sencillo que utiliza un archivo `.json` para el almacenamiento de la información. Ofrece una base sólida para ser extendida a aplicaciones web con interfaz de usuario o integración con bases de datos reales.
+El usuario interactúa con el programa desde el terminal mediante un menú numérico. Cada tarea contiene un nombre, una descripción y un estado (`To-Do` o `Done`). Las tareas se guardan en `data/TaskList.json`, lo que permite mantener la información entre sesiones.
 
 ## ⚙️ Funcionalidad
 
-- Crear nuevas tareas con nombre, descripción y estado.
-- Leer la lista completa de tareas almacenadas.
-- Actualizar tareas por su ID.
-- Eliminar tareas específicas.
-- Persistencia de datos en un archivo JSON (`TaskList.json`).
+- Crear nuevas tareas con nombre y descripción.
+- Listar todas las tareas o clasificarlas por estado.
+- Marcar tareas como realizadas.
+- Editar nombre y descripción de tareas existentes.
+- Eliminar tareas por su número de índice.
+- Cambiar el modo de visualización (lista completa o dividida en pendientes/hechas).
+- Guardado y carga automática desde archivo JSON.
 
 ## 🛠️ Tecnologías usadas
 
 - **Python 3.10+**
-- **FastAPI** para creación de endpoints.
-- **JSON** para el almacenamiento local de datos.
+- **json** para guardar tareas en disco
+- Aplicación desarrollada completamente en consola (sin interfaces gráficas ni web)
 
 ## 📁 Estructura del proyecto
 
@@ -29,38 +31,37 @@ My_ToDo_app/
 │   └── TaskList.json       # Archivo donde se almacenan las tareas
 │
 └── src/
-    └── app.py              # Código principal con los endpoints y lógica de la API
+    └── app.py              # Código principal con toda la lógica y el menú interactivo
 ```
 
-## 🚀 Instalación y puesta en marcha
+## 🚀 Instalación y ejecución
 
 1. Clona el repositorio:
    ```
    git clone https://github.com/davidrguez98/My_ToDo_app.git
-   cd My_ToDo_app
+   cd My_ToDo_app/src
    ```
 
-2. Crea y activa un entorno virtual (opcional pero recomendado):
+2. Ejecuta el programa:
    ```
-   python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
-   ```
-
-3. Instala las dependencias necesarias:
-   ```
-   pip install fastapi uvicorn
+   python app.py
    ```
 
-4. Inicia el servidor:
-   ```
-   uvicorn src.app:app --reload
-   ```
+   Asegúrate de tener Python 3.10 o superior instalado.
 
-   La API estará disponible en `http://127.0.0.1:8000`.
+3. Interactúa con el menú que aparecerá en pantalla para gestionar tus tareas.
 
-5. Puedes explorar la documentación automática de la API en:
-   - Swagger UI: `http://127.0.0.1:8000/docs`
-   - Redoc: `http://127.0.0.1:8000/redoc`
+## 📝 Estructura de una tarea
+
+Cada tarea se guarda en el archivo `TaskList.json` con esta estructura:
+
+```json
+{
+    "name": "Lengua",
+    "description": "Si",
+    "status": "To-Do"
+}
+```
 
 ## 🤝 Contacto
 
